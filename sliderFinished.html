@@ -1,0 +1,137 @@
+<!-- http://codepen.io/zuraizm/pen/vGDHl -->
+<!DOCTYPE html>
+<html>
+<head>
+	<title>slider</title>
+<style type="text/css">
+
+*{margin:0;padding: 0;}
+
+img{width:360px;height:240px;}
+
+#slider {
+  position: relative;
+  overflow: hidden;
+  margin: 20px auto 0 auto;
+  border-radius: 4px;
+}
+
+#slider ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 240px;
+  list-style: none;
+}
+
+#slider ul li {
+  position: relative;
+  display: block;
+  float: left;
+  width: 360px;
+  height: 240px;
+  background: #ccc;
+  text-align: center;
+  line-height: 300px;
+}
+a.control_prev, a.control_next {
+  position: absolute;
+  top: 40%;
+  z-index: 999;
+  display: block;
+  padding: 4% 3%;
+  width: auto;
+  height: auto;
+  background: #2a2a2a;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+a.control_prev:hover, a.control_next:hover {
+  opacity: 1;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+a.control_prev {
+  border-radius: 0 2px 2px 0;
+}
+
+a.control_next {
+  right: 0;
+  border-radius: 2px 0 0 2px;
+}
+</style>
+<script type="text/javascript" src="jquery-1.11.1.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	var slideCount = $('#slider ul li').length;
+	var slideWidth = $('#slider ul li').width();
+	var slideHeight = $('#slider ul li').height();
+	var sliderUlWidth = slideCount * slideWidth;
+	
+	$('#slider').css({ width: slideWidth, height: slideHeight });
+	
+	$('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+	
+    //move the last image to the left of the first image so if the user selects move right it will work
+    $('#slider ul li:last-child').prependTo('#slider ul');
+
+    function moveLeft() {
+        $('#slider ul').animate({
+            left: +slideWidth//"+=" +slideWidth+"px"
+        }, 2000, function () {
+            $('#slider ul li:last-child').prependTo('#slider ul');
+            $('#slider ul').css('left', '0px');
+        });
+        console.log($('#slider ul').css('left'));
+    };
+
+    function moveRight() {
+        $('#slider ul').animate({
+            left: -slideWidth//"-=" +slideWidth+"px"
+        }, 2000, function () {
+            $('#slider ul li:first-child').appendTo('#slider ul');
+            $('#slider ul').css('left', '0px');
+        });
+        resetTimer();
+    };
+   $('a.control_prev').click(function () {
+        moveLeft();
+        resetTimer();
+    });
+
+    $('a.control_next').click(function () {
+        moveRight();
+        resetTimer();
+    });
+
+    var slideTimer;
+
+    function resetTimer(){
+    	window.clearTimeout(slideTimer);
+    	slideTimer = window.setTimeout(moveRight, 5000);
+    }
+    resetTimer();
+
+});
+
+</script>
+</head>
+<body>
+<div id="slider">
+  <a href="#" class="control_next">>></a>
+  <a href="#" class="control_prev"><</a>
+<ul>
+	<li><img src = "face.jpg"></li>
+	<li><img src = "face2.jpg"></li>
+	<li><img src = "face3.jpg"></li>
+</ul>
+</div>
+</body>
+</html>
